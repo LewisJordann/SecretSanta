@@ -1,2 +1,2 @@
 # SecretSanta
-A website that will allow for a family to easily set up a secret santa for the holidays.
+A website that allows users to easily setup a secret santa.
