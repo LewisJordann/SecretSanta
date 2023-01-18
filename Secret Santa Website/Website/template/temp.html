@@ -1,0 +1,36 @@
+<!-- Temporary File -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, inital-scale=1" />
+        <title>Secret Santa Website</title>
+    </head>
+    <body>
+        <Button id="backBtn" type="button">Back</Button>
+        <script>
+            const backBtn = document.getElementById("backBtn");
+
+            backBtn.addEventListener("click", function(){
+                window.location.href = "http://127.0.0.1:5000/";
+            });
+        </script>
+    </body>
+    <body>
+        
+        <label for="email">Email: </label>
+        <input type="text" id="email" name="email"><br><br>
+        <label for="password">Password: </label>
+        <input type="text" id="password" name="password"><br><br>
+        
+
+        <button id="submitBtn" type="button">Submit</button>
+        <script>
+            const submitBtn = document.getElementById("submitBtn");
+
+            submitBtn.addEventListener("click", function(){
+                window.location.href = "http://127.0.0.1:5000/submitted";
+            });
+        </script>
+    </body>
+</html>
