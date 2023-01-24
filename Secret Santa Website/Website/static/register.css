@@ -23,6 +23,10 @@ body{
     border-bottom: 1px solid silver;
  
   }
+
+  .center p{
+    text-align: center;
+   }
  
   .center form{
     padding: 0 40px;

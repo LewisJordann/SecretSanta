@@ -24,6 +24,11 @@
 
  }
 
+ .center p{
+  text-align: center;
+  
+ }
+
  .center form{
    padding: 0 40px;
    box-sizing: border-box;
