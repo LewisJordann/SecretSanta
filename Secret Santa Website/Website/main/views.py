@@ -1,6 +1,11 @@
 from flask import Blueprint, request, jsonify, redirect, session, flash
 from flask import render_template, url_for
 import re
+import bcrypt
+from config import Config
+from Website.models.User import User
+from extensions import db
+
 views = Blueprint('views', __name__)
 
 @views.route('/')
@@ -46,10 +51,12 @@ def register():
         if confirmPassword != password:
             flash("Passwords do not match.", "info")
             return redirect(url_for("views.register"))
-
-        ### make request to db for account creation and send email verification
-
-    return render_template("register.html")
+        
+        # create user
+        # user = User(email, bcrypt.hashpw(password.encode("utf-8"), Config.DB_KEY))
+        
+    else:
+        return render_template("register.html")
 
 @views.route('/success')
 def success():
