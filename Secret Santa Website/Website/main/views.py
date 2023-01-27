@@ -1,10 +1,8 @@
 from flask import Blueprint, request, jsonify, redirect, session, flash
 from flask import render_template, url_for
 import re
-import bcrypt
-from config import Config
 from Website.models.User import User
-from extensions import db
+
 
 views = Blueprint('views', __name__)
 
@@ -52,15 +50,14 @@ def register():
             flash("Passwords do not match.", "info")
             return redirect(url_for("views.register"))
         
-        # create user
-        # user = User(email, bcrypt.hashpw(password.encode("utf-8"), Config.DB_KEY))
-        
+        # create user in firebase and send email confirmation
+        flash("You can now login.", "info")
+        return redirect(url_for("views.login"))
     else:
         return render_template("register.html")
 
 @views.route('/success')
 def success():
-    email = None
     if "usrEmail" in session:
         usr = session["usrEmail"]
         return f"<h1>Hello: {usr}</h1>"
