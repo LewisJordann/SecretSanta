@@ -1,8 +1,7 @@
 from flask import Blueprint, request, jsonify, redirect, session, flash
 from flask import render_template, url_for
 import re
-from Website.models.User import User
-
+from Website import auth
 
 views = Blueprint('views', __name__)
 
@@ -13,15 +12,21 @@ def home():
 @views.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == 'POST':
-        # get input from html form
-        ### make request to db to verify account exists
-        usrEmail = request.form["loginEmail"]
-        session["usrEmail"] = usrEmail
-        return redirect(url_for("views.success"))
-    else:
-        if "usrEmail" in session:
+        try:
+            # grab email from form and try and sign in
+            usrEmail = request.form["loginEmail"]
+            usrPassword = request.form["loginPassword"]
+            user = auth.sign_in_with_email_and_password(usrEmail, usrPassword)
+            session['user'] = usrEmail
             return redirect(url_for("views.success"))
-        return render_template("login.html")
+        except:
+            flash("An Error has occurred trying to sign in.","info")
+            return redirect(url_for("views.login"))
+    else:
+        if "user" in session:
+            return redirect(url_for("views.success"))
+        else:
+            return render_template("login.html")
 
 @views.route('/register', methods=["POST", "GET"])
 def register():
@@ -51,21 +56,28 @@ def register():
             return redirect(url_for("views.register"))
         
         # create user in firebase and send email confirmation
-        flash("You can now login.", "info")
-        return redirect(url_for("views.login"))
+        try:
+            user = auth.create_user_with_email_and_password(email, password)
+            auth.send_email_verification(user['idToken'])
+            flash("Account verification has been sent to your email.", "info")
+            return redirect(url_for("views.login"))
+        except:
+            flash("An Error has occurred with registering.","info")
+            return redirect(url_for("views.register"))
+
     else:
         return render_template("register.html")
 
 @views.route('/success')
 def success():
-    if "usrEmail" in session:
-        usr = session["usrEmail"]
+    if "user" in session:
+        usr = session["user"]
         return f"<h1>Hello: {usr}</h1>"
     else:
         return redirect(url_for("views.login"))
 
 @views.route('/logout')
 def logout():
-    session.pop("usrEmail", None)
+    session.pop("user", None)
     flash("You have logged out.", "info")
     return redirect(url_for("views.login"))

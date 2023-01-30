@@ -1,5 +1,10 @@
 from flask import Flask
 from config import Config
+import pyrebase
+from key import db_key
+# initalize firebase
+firebase = pyrebase.initialize_app(db_key)
+auth = firebase.auth()
 
 def create_app(config_class=Config):
     # initalize Flask app
@@ -7,9 +12,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     from .main.views import views
-    from .main.auth import auth
 
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
 
     return app

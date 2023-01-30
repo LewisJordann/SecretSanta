@@ -1,5 +1,4 @@
 from datetime import datetime
-import bcrypt
 
 class User():
     data_created = datetime.utcnow
