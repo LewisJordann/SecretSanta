@@ -23,6 +23,7 @@ def login():
             flash("An Error has occurred trying to sign in.","info")
             return redirect(url_for("views.login"))
     else:
+        # if user exists in cookies, stay signed in
         if "user" in session:
             return redirect(url_for("views.success"))
         else:
@@ -67,6 +68,16 @@ def register():
 
     else:
         return render_template("register.html")
+
+@views.route('/forgotpassword', methods=["POST", "GET"])
+def forgotPassword():
+    if request.method == 'POST':
+        email = request.form["Email"]
+        auth.send_password_reset_email(email)
+        flash("Check your email to reset your password.", "info")
+        return render_template("forgotpasswordsent.html")
+    else:
+        return render_template("forgotpassword.html")
 
 @views.route('/success')
 def success():

@@ -2,6 +2,7 @@ from flask import Flask
 from config import Config
 import pyrebase
 from key import db_key
+
 # initalize firebase
 firebase = pyrebase.initialize_app(db_key)
 auth = firebase.auth()
