@@ -18,14 +18,14 @@ def login():
             usrPassword = request.form["loginPassword"]
             user = auth.sign_in_with_email_and_password(usrEmail, usrPassword)
             session['user'] = usrEmail
-            return redirect(url_for("views.success"))
+            return redirect(url_for("views.events"))
         except:
-            flash("An Error has occurred trying to sign in.","info")
+            flash("We couldn't log you in. Please check your email and password and try again.","info")
             return redirect(url_for("views.login"))
     else:
         # if user exists in cookies, stay signed in
         if "user" in session:
-            return redirect(url_for("views.success"))
+            return redirect(url_for("views.events"))
         else:
             return render_template("login.html")
 
@@ -79,11 +79,11 @@ def forgotPassword():
     else:
         return render_template("forgotpassword.html")
 
-@views.route('/success')
-def success():
+@views.route('/events')
+def events():
     if "user" in session:
         usr = session["user"]
-        return f"<h1>Hello: {usr}</h1>"
+        return render_template("events.html")
     else:
         return redirect(url_for("views.login"))
 
